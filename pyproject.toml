@@ -1,0 +1,53 @@
+[project]
+name = "lumia"
+version = "0.1.0"
+description = "Event-driven, plugin-first framework for LLM-powered IM bots"
+requires-python = ">=3.11"
+license = {text = "Proprietary"}
+authors = [
+    {name = "Lumia Framework Team"}
+]
+readme = "README.md"
+
+dependencies = [
+    "dill>=0.3.7",
+    "toml>=0.10.2",
+    "tomlkit>=0.12.0",
+    "httpx>=0.25.0",
+    "websockets>=12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+]
+memory = [
+    "sentence-transformers>=2.2.0",
+    "psycopg[binary]>=3.1.0",
+]
+
+[project.scripts]
+pkg = "pkg.cli:main"
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lumia*", "pkg*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = "-v --cov=lumia --cov=pkg --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["lumia", "pkg"]
+omit = ["*/tests/*", "*/test_*.py"]
